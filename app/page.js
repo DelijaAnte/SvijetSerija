@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import Image from "next/image";
 
 export default function Home() {
@@ -15,11 +22,11 @@ export default function Home() {
       try {
         const { data } = await axios.get("https://api.tvmaze.com/shows");
         const sortedShows = data
-          .filter((show) => show.rating && show.rating.average !== null) // Filtriraj serije bez ocjene
-          .sort((a, b) => b.rating.average - a.rating.average); // Sortiraj po ocjeni
+          .filter((show) => show.rating && show.rating.average !== null)
+          .sort((a, b) => b.rating.average - a.rating.average);
         setShows(sortedShows);
       } catch (error) {
-        console.error("Error fetching shows:", error);
+        console.error("Greška pri dohvaćanju serija:", error);
       }
     };
     fetchShows();
@@ -30,30 +37,31 @@ export default function Home() {
 
   return (
     <div className="p-4">
-      {/* Opis aplikacije */}
       <p className="text-center text-gray-700 mb-4">
         Ova aplikacija omogućuje pregled informacija o serijama, pomaže
         korisnicima u donošenju odluke što gledati i pruža uvid u najbolje
         ocijenjene serije.
       </p>
 
-      {/* Naslov stranice */}
       <h2 className="text-2xl font-semibold text-center mb-6">
         Najbolje ocijenjene:
       </h2>
 
-      {/* Grid za prikaz serija */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {currentShows.map((show) => (
           <Card
             key={show.id}
             className="hover:shadow-lg transition-shadow flex flex-col items-center text-center"
           >
-            <CardHeader className="flex justify-center items-center h-[60px]">
-              <CardTitle className="text-center text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
+            <CardHeader className="flex flex-col justify-center items-center px-4 py-2">
+              <CardTitle className="text-lg font-semibold text-black flex justify-center items-center h-16 w-full">
                 {show.name}
               </CardTitle>
+              <CardDescription className="text-sm text-gray-600">
+                Rating: {show.rating.average}
+              </CardDescription>
             </CardHeader>
+
             <CardContent className="flex flex-col items-center">
               <Image
                 src={show.image?.medium || "/placeholder.jpg"}
@@ -62,15 +70,15 @@ export default function Home() {
                 height={295}
                 className="rounded-md"
               />
-              <p className="mt-2 text-sm text-gray-600">
-                Rating: {show.rating.average || "N/A"}
-              </p>
             </CardContent>
+
+            <CardFooter className="text-sm text-gray-600">
+              <p>{show.genres.join(", ")}</p>
+            </CardFooter>
           </Card>
         ))}
       </div>
 
-      {/* Navigacija za paginaciju */}
       <div className="flex justify-center mt-4 gap-4">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
