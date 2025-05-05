@@ -3,16 +3,28 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ShowDetails({ params }) {
   const [show, setShow] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [resolvedParams, setResolvedParams] = useState(null);
 
   useEffect(() => {
+    const resolveParams = async () => {
+      const resolved = await params;
+      setResolvedParams(resolved);
+    };
+
+    resolveParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (!resolvedParams) return;
+
     const fetchShowDetails = async () => {
       try {
-        const resolvedParams = await params;
         const { data } = await axios.get(
           `https://api.tvmaze.com/shows/${resolvedParams.id}`
         );
@@ -25,7 +37,7 @@ export default function ShowDetails({ params }) {
     };
 
     fetchShowDetails();
-  }, [params]);
+  }, [resolvedParams]);
 
   if (loading) {
     return <p className="text-gray-600">Loading...</p>;
@@ -95,6 +107,14 @@ export default function ShowDetails({ params }) {
       <p className="text-gray-600">
         <strong>Network:</strong> {show.network ? show.network.name : "N/A"}
       </p>
+
+      {/* Dugme za glumačku postavu */}
+      <Link
+        href={`/serije/${resolvedParams?.id}/cast`}
+        className="mt-4 px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 transition duration-200"
+      >
+        Vidi glumce
+      </Link>
     </div>
   );
 }
