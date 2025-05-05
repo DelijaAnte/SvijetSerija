@@ -11,6 +11,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const [shows, setShows] = useState([]);
@@ -49,33 +50,32 @@ export default function Home() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {currentShows.map((show) => (
-          <Card
-            key={show.id}
-            className="hover:shadow-lg transition-shadow flex flex-col items-center text-center"
-          >
-            <CardHeader className="flex flex-col justify-center items-center px-4 py-2">
-              <CardTitle className="text-lg font-semibold text-black flex justify-center items-center h-16 w-full">
-                {show.name}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600">
-                Rating: {show.rating.average}
-              </CardDescription>
-            </CardHeader>
+          <Link key={show.id} href={`/serije/${show.id}`}>
+            <Card className="bg-stone-100 hover:shadow-lg transition-shadow flex flex-col items-center text-center cursor-pointer">
+              <CardHeader className="flex flex-col justify-center items-center px-4 py-2">
+                <CardTitle className="text-lg font-semibold text-black flex justify-center items-center h-16 w-full">
+                  {show.name}
+                </CardTitle>
+                <CardDescription className="text-sm text-gray-600">
+                  Rating: {show.rating.average}
+                </CardDescription>
+              </CardHeader>
 
-            <CardContent className="flex flex-col items-center">
-              <Image
-                src={show.image?.medium || "/placeholder.jpg"}
-                alt={show.name}
-                width={210}
-                height={295}
-                className="rounded-md"
-              />
-            </CardContent>
+              <CardContent className="flex flex-col items-center">
+                <Image
+                  src={show.image?.medium || "/placeholder.jpg"}
+                  alt={show.name}
+                  width={210}
+                  height={295}
+                  className="rounded-md"
+                />
+              </CardContent>
 
-            <CardFooter className="text-sm text-gray-600">
-              <p>{show.genres.join(", ")}</p>
-            </CardFooter>
-          </Card>
+              <CardFooter className="text-sm text-gray-600">
+                <p>{show.genres.join(", ")}</p>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
       </div>
 
