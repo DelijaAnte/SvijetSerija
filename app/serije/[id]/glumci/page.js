@@ -3,23 +3,40 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function CastPage({ params }) {
   const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [resolvedParams, setResolvedParams] = useState(null);
 
   useEffect(() => {
-    console.log("Params ID:", params.id); // Debugging: provjera ID-a
+    const resolveParams = async () => {
+      const resolved = await params; // Razmotavanje params
+      setResolvedParams(resolved);
+    };
+
+    resolveParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (!resolvedParams) return;
+
     const fetchCast = async () => {
       try {
         const { data } = await axios.get(
-          `https://api.tvmaze.com/shows/${params.id}/cast`
+          `https://api.tvmaze.com/shows/${resolvedParams.id}/cast`
         );
-        console.log("Fetched Cast Data:", data); // Debugging: provjera podataka
         setCast(data);
       } catch (err) {
-        console.error("Error fetching cast:", err); // Debugging: ispis greške
         setError("Failed to fetch cast.");
       } finally {
         setLoading(false);
@@ -27,7 +44,7 @@ export default function CastPage({ params }) {
     };
 
     fetchCast();
-  }, [params.id]);
+  }, [resolvedParams]);
 
   if (loading) {
     return <p className="text-gray-600">Loading...</p>;
@@ -44,21 +61,36 @@ export default function CastPage({ params }) {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Glumačka postava</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {cast.map((member) => (
-          <div key={member.person.id} className="flex flex-col items-center">
-            <div className="relative w-32 h-32 mb-2">
-              <Image
-                src={member.person.image?.medium || "/placeholder.jpg"}
-                alt={member.person.name}
-                fill
-                className="object-cover rounded-full"
-              />
-            </div>
-            <p className="text-lg font-semibold">{member.person.name}</p>
-          </div>
-        ))}
-      </div>
+      <Carousel className="relative">
+        <CarouselContent>
+          {cast.map((member, index) => (
+            <CarouselItem
+              key={`${member.person.id}-${index}`} // Dodan index za jedinstvenost
+              className="flex flex-col items-center basis-1/5"
+            >
+              <Link
+                href={`/serije/${resolvedParams.id}/glumci/${member.person.id}`}
+              >
+                <div className="relative w-32 h-32 mb-2">
+                  <Image
+                    src={member.person.image?.medium || "/placeholder.jpg"}
+                    alt={member.person.name}
+                    fill
+                    className="object-cover rounded-full"
+                  />
+                </div>
+              </Link>
+              <p className="text-lg font-semibold">{member.person.name}</p>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-4 py-2">
+          Previous
+        </CarouselPrevious>
+        <CarouselNext className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-4 py-2">
+          Next
+        </CarouselNext>
+      </Carousel>
     </div>
   );
 }

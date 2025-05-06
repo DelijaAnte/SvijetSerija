@@ -57,7 +57,7 @@ export default function Home() {
                   {show.name}
                 </CardTitle>
                 <CardDescription className="text-sm text-gray-600">
-                  Rating: {show.rating.average}
+                  Ocjena: {show.rating.average}
                 </CardDescription>
               </CardHeader>
 
@@ -85,7 +85,7 @@ export default function Home() {
           disabled={currentPage === 1}
           className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
         >
-          Previous
+          Prethodna
         </button>
         <button
           onClick={() =>
@@ -96,7 +96,7 @@ export default function Home() {
           disabled={startIndex + itemsPerPage >= shows.length}
           className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
         >
-          Next
+          Sljedeća
         </button>
       </div>
     </div>

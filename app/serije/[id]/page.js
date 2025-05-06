@@ -110,10 +110,18 @@ export default function ShowDetails({ params }) {
 
       {/* Dugme za glumačku postavu */}
       <Link
-        href={`/serije/${resolvedParams?.id}/cast`}
+        href={`/serije/${resolvedParams?.id}/glumci`}
         className="mt-4 px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 transition duration-200"
       >
         Vidi glumce
+      </Link>
+
+      {/* Dugme za popis epizoda */}
+      <Link
+        href={`/serije/${resolvedParams?.id}/epizode`}
+        className="mt-4 px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 transition duration-200"
+      >
+        Vidi epizode
       </Link>
     </div>
   );
