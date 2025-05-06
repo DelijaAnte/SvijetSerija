@@ -20,7 +20,7 @@ export default function CastPage({ params }) {
 
   useEffect(() => {
     const resolveParams = async () => {
-      const resolved = await params; // Razmotavanje params
+      const resolved = await params;
       setResolvedParams(resolved);
     };
 
@@ -60,12 +60,12 @@ export default function CastPage({ params }) {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Glumačka postava</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">Glumačka postava</h1>
       <Carousel className="relative">
         <CarouselContent>
           {cast.map((member, index) => (
             <CarouselItem
-              key={`${member.person.id}-${index}`} // Dodan index za jedinstvenost
+              key={`${member.person.id}-${index}`}
               className="flex flex-col items-center basis-1/5"
             >
               <Link

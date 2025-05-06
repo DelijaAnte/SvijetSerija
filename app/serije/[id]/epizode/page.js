@@ -12,7 +12,7 @@ export default function EpisodesPage({ params }) {
 
   useEffect(() => {
     const resolveParams = async () => {
-      const resolved = await params; // Razmotavanje params
+      const resolved = await params;
       setResolvedParams(resolved);
     };
 
@@ -58,7 +58,7 @@ export default function EpisodesPage({ params }) {
           <li key={episode.id} className="border-b pb-2">
             <Link
               href={`/serije/${resolvedParams.id}/epizode/${episode.id}`}
-              className="text-lg font-semibold text-blue-500 hover:underline"
+              className="text-lg font-semibold text-yellow-400 hover:underline"
             >
               {episode.name}
             </Link>

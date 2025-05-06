@@ -39,12 +39,12 @@ export default function ShowDetails({ params }) {
     fetchShowDetails();
   }, [resolvedParams]);
 
-  if (loading) {
-    return <p className="text-gray-600">Loading...</p>;
-  }
-
   if (error) {
     return <p className="text-red-600">{error}</p>;
+  }
+
+  if (!show) {
+    return <p className="text-gray-600">Nema dostupnih podataka o seriji.</p>;
   }
 
   return (
@@ -62,6 +62,7 @@ export default function ShowDetails({ params }) {
           className="rounded-md mx-auto"
           placeholder="blur"
           blurDataURL="/placeholder.jpg"
+          priority
         />
       </div>
       <p className="text-gray-600">

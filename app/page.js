@@ -45,7 +45,7 @@ export default function Home() {
       </p>
 
       <h2 className="text-2xl font-semibold text-center mb-6">
-        Najbolje ocijenjene:
+        Najbolje ocijenjene (klikni za detalje):
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -83,7 +83,7 @@ export default function Home() {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+          className="px-4 py-2 bg-yellow-400 rounded hover:bg-yellow-500 disabled:opacity-50"
         >
           Prethodna
         </button>
@@ -94,7 +94,7 @@ export default function Home() {
             )
           }
           disabled={startIndex + itemsPerPage >= shows.length}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+          className="px-4 py-2 bg-yellow-400 rounded hover:bg-yellow-500 disabled:opacity-50"
         >
           Sljedeća
         </button>

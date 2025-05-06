@@ -12,7 +12,7 @@ export default function EpisodeDetailsPage({ params }) {
 
   useEffect(() => {
     const resolveParams = async () => {
-      const resolved = await params; // Razmotavanje params
+      const resolved = await params;
       setResolvedParams(resolved);
     };
 

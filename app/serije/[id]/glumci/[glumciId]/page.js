@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
-import Link from "next/link"; // Dodano za korištenje linkova
+import Link from "next/link";
 
 export default function ActorDetailsPage({ params }) {
   const [actor, setActor] = useState(null);
@@ -14,7 +14,7 @@ export default function ActorDetailsPage({ params }) {
 
   useEffect(() => {
     const resolveParams = async () => {
-      const resolved = await params; // Razmotavanje params
+      const resolved = await params;
       setResolvedParams(resolved);
     };
 
@@ -73,6 +73,9 @@ export default function ActorDetailsPage({ params }) {
             width={300}
             height={400}
             className="rounded-md"
+            placeholder="blur"
+            blurDataURL="/placeholder.jpg"
+            priority
           />
         </div>
       )}
@@ -88,14 +91,14 @@ export default function ActorDetailsPage({ params }) {
 
       {/* Prikaz serija u kojima je glumac glumio */}
       <h2 className="text-xl font-bold mt-6 mb-4">
-        Serije u kojima je glumio:
+        Serije u kojima je glumio/la:
       </h2>
       {shows.length > 0 ? (
         <ul className="space-y-4">
           {shows.map((show, index) => (
             <li key={`${show.id}-${index}`} className="border-b pb-2">
               <Link
-                href={`/serije/${show.id}`} // Dodan link na stranicu detalja serije
+                href={`/serije/${show.id}`}
                 className="text-lg font-semibold text-yellow-400 hover:underline"
               >
                 {show.name}
