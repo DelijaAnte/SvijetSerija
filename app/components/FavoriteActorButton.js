@@ -3,51 +3,52 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-export default function FavoriteButton({ show }) {
+export default function FavoriteActorButton({ actor }) {
   const [isFavorite, setIsFavorite] = useState(false); // Praćenje stanja favorita
 
   useEffect(() => {
     const checkIfFavorite = async () => {
       try {
-        const response = await fetch("/api/favorites");
+        const response = await fetch("/api/favorites/actors");
         if (response.ok) {
           const favorites = await response.json();
-          const isAlreadyFavorite = favorites.some((fav) => fav.id === show.id);
+          const isAlreadyFavorite = favorites.some(
+            (fav) => fav.id === actor.id
+          );
           setIsFavorite(isAlreadyFavorite);
         } else {
-          console.error("Failed to fetch favorites");
+          console.error("Failed to fetch favorite actors");
         }
       } catch (err) {
-        console.error("Error fetching favorites:", err);
+        console.error("Error fetching favorite actors:", err);
       }
     };
 
     checkIfFavorite();
-  }, [show.id]);
+  }, [actor.id]);
 
   const addToFavorites = async () => {
     try {
-      const response = await fetch("/api/favorites", {
+      const response = await fetch("/api/favorites/actors", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id: show.id,
-          name: show.name,
-          rating: show.rating.average,
-          image: show.image?.medium,
+          id: actor.id,
+          name: actor.name,
+          image: actor.image?.medium,
         }),
       });
 
       if (response.ok) {
-        setIsFavorite(true); // Označi seriju kao dodanu u favorite
-        toast.success(`${show.name} je uspješno dodano u favorite!`); // Prikaz uspješne poruke
+        setIsFavorite(true); // Označi glumca kao dodanog u favorite
+        toast.success(`${actor.name} je uspješno dodan u favorite!`); // Prikaz uspješne poruke
       } else {
-        console.error("Failed to add to favorites");
-        toast.error("Dodavanje u favorite nije uspjelo."); // Prikaz greške
+        console.error("Failed to add actor to favorites");
+        toast.error("Dodavanje glumca u favorite nije uspjelo."); // Prikaz greške
       }
     } catch (err) {
-      console.error("Error adding to favorites:", err);
-      toast.error("Došlo je do greške prilikom dodavanja u favorite."); // Prikaz greške
+      console.error("Error adding actor to favorites:", err);
+      toast.error("Došlo je do greške prilikom dodavanja glumca u favorite."); // Prikaz greške
     }
   };
 

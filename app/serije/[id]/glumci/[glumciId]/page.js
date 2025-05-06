@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import FavoriteActorButton from "@/app/components/FavoriteActorButton";
 
 export default function ActorDetailsPage({ params }) {
   const [actor, setActor] = useState(null);
@@ -88,6 +89,15 @@ export default function ActorDetailsPage({ params }) {
       <p className="text-gray-600 mb-4">
         <strong>Spol:</strong> {actor.gender || "N/A"}
       </p>
+
+      {/* Dodavanje FavoriteActorButton komponente */}
+      <FavoriteActorButton
+        actor={{
+          id: actor.id,
+          name: actor.name,
+          image: actor.image?.medium,
+        }}
+      />
 
       {/* Prikaz serija u kojima je glumac glumio */}
       <h2 className="text-xl font-bold mt-6 mb-4">

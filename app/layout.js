@@ -2,6 +2,11 @@ import "./globals.css";
 import Link from "next/link";
 import BackButton from "./components/BackButton";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export const metadata = {
   title: "Svijet Serija - Najbolje serije na jednom mjestu",
@@ -28,9 +33,32 @@ export default function RootLayout({ children }) {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/favorites" className="hover:underline">
-                    Favoriti
-                  </Link>
+                  {/* Popover za Favoriti */}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="hover:underline">Favoriti</button>
+                    </PopoverTrigger>
+                    <PopoverContent className="bg-white shadow-md rounded">
+                      <ul className="space-y-2">
+                        <li>
+                          <Link
+                            href="/favorites"
+                            className="text-yellow-400 hover:underline"
+                          >
+                            Serije
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/favorites/glumci"
+                            className="text-yellow-400 hover:underline"
+                          >
+                            Glumci
+                          </Link>
+                        </li>
+                      </ul>
+                    </PopoverContent>
+                  </Popover>
                 </li>
                 <li>
                   <BackButton />
