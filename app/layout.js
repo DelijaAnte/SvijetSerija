@@ -1,6 +1,7 @@
 import "./globals.css";
 import Link from "next/link";
 import BackButton from "./components/BackButton";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Svijet Serija - Najbolje serije na jednom mjestu",
@@ -27,12 +28,20 @@ export default function RootLayout({ children }) {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/favorites" className="hover:underline">
+                    Favoriti
+                  </Link>
+                </li>
+                <li>
                   <BackButton />
                 </li>
               </ul>
             </nav>
           </div>
         </header>
+
+        {/* Toaster za prikaz toast poruka */}
+        <Toaster />
 
         {/* Glavni sadržaj stranice */}
         <main>{children}</main>

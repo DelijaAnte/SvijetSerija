@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import FavoriteButton from "@/app/components/FavoriteButton";
 
 export default function ShowDetails({ params }) {
   const [show, setShow] = useState(null);
@@ -66,7 +67,7 @@ export default function ShowDetails({ params }) {
           className="rounded-md mx-auto"
           placeholder="blur"
           blurDataURL="/placeholder.jpg"
-          priority
+          priority={true}
         />
       </div>
       <p className="text-gray-600">
@@ -112,6 +113,9 @@ export default function ShowDetails({ params }) {
       <p className="text-gray-600">
         <strong>Network:</strong> {show.network ? show.network.name : "N/A"}
       </p>
+
+      {/* Komponenta FavoriteButton za dodavanje u favorite */}
+      <FavoriteButton show={show} />
 
       {/* Dugme za glumačku postavu */}
       <Link
