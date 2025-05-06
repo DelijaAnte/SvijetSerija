@@ -43,6 +43,10 @@ export default function ShowDetails({ params }) {
     return <p className="text-red-600">{error}</p>;
   }
 
+  if (loading) {
+    return <p className="text-gray-600">Učitavanje podataka o seriji...</p>;
+  }
+
   if (!show) {
     return <p className="text-gray-600">Nema dostupnih podataka o seriji.</p>;
   }
