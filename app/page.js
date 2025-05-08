@@ -68,6 +68,7 @@ export default function Home() {
                   width={210}
                   height={295}
                   className="rounded-md"
+                  priority
                 />
               </CardContent>
 

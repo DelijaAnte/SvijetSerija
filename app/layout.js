@@ -13,6 +13,9 @@ export const metadata = {
   description:
     "Pronađite informacije o najboljim serijama i njihovim detaljima.",
   keywords: "serije, TV serije, najbolje serije, informacije o serijama",
+  icons: {
+    icon: "/favicon.ico",
+  },
   author: "Ante Delija",
 };
 
@@ -38,12 +41,12 @@ export default function RootLayout({ children }) {
                     <PopoverTrigger asChild>
                       <button className="hover:underline">Favoriti</button>
                     </PopoverTrigger>
-                    <PopoverContent className="bg-white shadow-md rounded">
-                      <ul className="space-y-2">
+                    <PopoverContent className="bg-white shadow-md rounded p-0 w-auto">
+                      <ul className="space-y-0">
                         <li>
                           <Link
                             href="/favorites"
-                            className="text-yellow-400 hover:underline"
+                            className="text-yellow-400 hover:underline block text-sm px-4 py-2"
                           >
                             Serije
                           </Link>
@@ -51,7 +54,7 @@ export default function RootLayout({ children }) {
                         <li>
                           <Link
                             href="/favorites/glumci"
-                            className="text-yellow-400 hover:underline"
+                            className="text-yellow-400 hover:underline block text-sm px-4 py-2"
                           >
                             Glumci
                           </Link>
