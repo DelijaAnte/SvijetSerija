@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import Search from "./components/Search";
 
 export const metadata = {
   title: "Svijet Serija - Najbolje serije na jednom mjestu",
@@ -26,7 +27,9 @@ export default function RootLayout({ children }) {
         {/* Globalni header */}
         <header className="bg-yellow-400 text-black py-4">
           <div className="container mx-auto px-4 flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Svijet Serija</h1>
+            <Link href="/" className="hover:underline">
+              <h1 className="text-2xl font-bold">Svijet Serija</h1>
+            </Link>
             {/* Navigacija */}
             <nav>
               <ul className="flex space-x-4 items-center">
@@ -34,6 +37,9 @@ export default function RootLayout({ children }) {
                   <Link href="/" className="hover:underline">
                     Početna
                   </Link>
+                </li>
+                <li>
+                  <Search />
                 </li>
                 <li>
                   {/* Popover za Favoriti */}
