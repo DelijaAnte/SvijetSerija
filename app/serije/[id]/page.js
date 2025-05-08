@@ -45,7 +45,15 @@ export default function ShowDetails({ params }) {
   }
 
   if (loading) {
-    return <p className="text-gray-600">Učitavanje podataka o seriji...</p>;
+    return (
+      <div className="p-4 animate-pulse space-y-4">
+        <div className="h-10 bg-gray-300 rounded w-1/2 mx-auto" />
+        <div className="h-6 bg-gray-300 rounded w-full" />
+        <div className="h-[450px] bg-gray-300 rounded w-full max-w-2xl mx-auto" />
+        <div className="h-6 bg-gray-300 rounded w-3/4 mx-auto" />
+        <div className="h-6 bg-gray-300 rounded w-1/2 mx-auto" />
+      </div>
+    );
   }
 
   if (!show) {
@@ -53,23 +61,25 @@ export default function ShowDetails({ params }) {
   }
 
   return (
-    <div className="p-4 flex flex-col items-center">
+    <div className="p-4 flex flex-col items-center min-h-screen">
       <h1 className="text-3xl font-bold mb-4 text-center">{show.name}</h1>
       <p className="text-gray-600 mb-4 text-center">
         {show.summary.replace(/<[^>]+>/g, "")}
       </p>
-      <div className="relative w-full max-w-2xl h-auto mb-4">
+      <div className="w-full max-w-2xl mb-4 mx-auto">
         <Image
           src={show.image?.original || "/placeholder.jpg"}
           alt={show.name}
           width={800}
           height={450}
-          className="rounded-md mx-auto"
+          className="rounded-md object-contain"
           placeholder="blur"
           blurDataURL="/placeholder.jpg"
-          priority={true}
+          priority
+          sizes="(max-width: 768px) 100vw, 800px"
         />
       </div>
+
       <p className="text-gray-600">
         <strong>Genres:</strong> {show.genres.join(", ")}
       </p>

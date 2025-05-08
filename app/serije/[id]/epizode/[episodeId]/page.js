@@ -39,7 +39,19 @@ export default function EpisodeDetailsPage({ params }) {
   }, [resolvedParams]);
 
   if (loading) {
-    return <p className="text-gray-600">Loading...</p>;
+    return (
+      <div className="p-4 animate-pulse">
+        <div className="h-8 bg-gray-300 rounded w-1/3 mb-4"></div>
+        <div className="h-[450px] bg-gray-300 rounded mb-4"></div>
+        <div className="space-y-2">
+          <div className="h-4 bg-gray-300 rounded w-1/4"></div>
+          <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+          <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+          <div className="h-4 bg-gray-300 rounded w-full"></div>
+          <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -78,6 +90,37 @@ export default function EpisodeDetailsPage({ params }) {
       <p className="text-gray-600">
         {episode.summary?.replace(/<[^>]+>/g, "")}
       </p>
+      <div className="flex justify-between mt-6">
+        <button
+          disabled={episode.number === 1}
+          onClick={() => {
+            const prev = episode.number - 1;
+            if (prev > 0) {
+              window.location.href = `/serije/${
+                episode._embedded?.show?.id
+              }/epizode/${episode.id - 1}`;
+            }
+          }}
+          className={`px-4 py-2 rounded-md ${
+            episode.number === 1
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-yellow-400 hover:bg-yellow-500"
+          }`}
+        >
+          Prethodna
+        </button>
+
+        <button
+          onClick={() => {
+            window.location.href = `/serije/${
+              episode._embedded?.show?.id
+            }/epizode/${episode.id + 1}`;
+          }}
+          className="px-4 py-2 rounded-md bg-yellow-400 hover:bg-yellow-500"
+        >
+          Sljedeća
+        </button>
+      </div>
     </div>
   );
 }

@@ -66,6 +66,10 @@ export default function EpisodesPage({ params }) {
               Sezona {episode.season}, Epizoda {episode.number}
             </p>
             <p className="text-gray-600">{episode.airdate}</p>
+            <p className="text-gray-600">
+              <strong>Trajanje:</strong>{" "}
+              {episode.runtime ? `${episode.runtime} min` : "N/A"}
+            </p>
           </li>
         ))}
       </ul>
