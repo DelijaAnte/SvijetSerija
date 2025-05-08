@@ -37,7 +37,11 @@ export default function FavoriteActorsPage() {
 
   if (favorites.length === 0) {
     return (
-      <p className="text-center text-gray-600">Nema favoriziranih glumaca.</p>
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-3xl font-bold text-gray-600">
+          Nema favoriziranih glumaca.
+        </p>
+      </div>
     );
   }
 

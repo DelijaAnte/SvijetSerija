@@ -31,9 +31,14 @@ export default function FavoritesPage() {
   };
 
   if (favorites.length === 0) {
-    return <p className="text-center text-gray-600">Nema favorita.</p>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-3xl font-bold text-gray-600">
+          Nema favoriziranih serija.
+        </p>
+      </div>
+    );
   }
-
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold text-center mb-4">Favoriti</h1>
