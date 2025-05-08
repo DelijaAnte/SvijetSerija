@@ -1,3 +1,5 @@
+import axios from "axios";
+
 let favoriteActors = []; // Privremena memorija za favorite glumce
 
 export async function GET(req) {
@@ -10,7 +12,7 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { id, name, image } = body;
+    const { id, name } = body;
 
     // Provjera da li glumac već postoji u favoritima
     const exists = favoriteActors.some((actor) => actor.id === id);
@@ -20,6 +22,12 @@ export async function POST(req) {
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
+
+    // Dohvaćanje slike glumca s tvmaze API-ja
+    const actorResponse = await axios.get(
+      `https://api.tvmaze.com/people/${id}`
+    );
+    const image = actorResponse.data.image?.medium || "/placeholder.jpg"; // Fallback na placeholder
 
     // Dodavanje glumca u favorite
     favoriteActors.push({ id, name, image });
@@ -31,6 +39,7 @@ export async function POST(req) {
       { status: 201, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
+    console.error("Error adding actor:", err);
     return new Response(
       JSON.stringify({ message: "Greška prilikom dodavanja glumca." }),
       { status: 500, headers: { "Content-Type": "application/json" } }
@@ -62,6 +71,7 @@ export async function DELETE(req) {
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
+    console.error("Error removing actor:", err);
     return new Response(
       JSON.stringify({ message: "Greška prilikom uklanjanja glumca." }),
       { status: 500, headers: { "Content-Type": "application/json" } }

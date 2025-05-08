@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image"; // Import Next.js Image komponentu
 import { toast } from "sonner"; // Importujte toast funkciju
 
 export default function FavoriteActorsPage() {
@@ -49,9 +50,16 @@ export default function FavoriteActorsPage() {
         {favorites.map((actor) => (
           <li
             key={actor.id}
-            className="flex justify-between items-center bg-stone-100 p-4 rounded shadow"
+            className="flex items-center bg-stone-100 p-4 rounded shadow"
           >
-            <div>
+            <div className="flex items-center space-x-4">
+              <Image
+                src={actor.image || "/placeholder.jpg"} // Prikaz slike glumca
+                alt={actor.name}
+                width={50} // Širina slike
+                height={50} // Visina slike
+                className="rounded-full" // Zaobljeni rubovi slike
+              />
               <Link href={`/serije/id/glumci/${actor.id}`}>
                 <h2 className="text-lg font-semibold text-yellow-400 hover:underline cursor-pointer">
                   {actor.name}
@@ -60,7 +68,7 @@ export default function FavoriteActorsPage() {
             </div>
             <button
               onClick={() => handleRemove(actor.id)}
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              className="ml-auto px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
             >
               Ukloni
             </button>

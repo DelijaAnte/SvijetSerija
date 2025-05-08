@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { toast } from "sonner"; // Importujte toast funkciju
+import Image from "next/image"; // Import Next.js Image komponentu
+import { toast } from "sonner";
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState([]);
@@ -36,29 +37,38 @@ export default function FavoritesPage() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold text-center mb-4">Favoriti</h1>
-      <ul className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {favorites.map((fav) => (
-          <li
+          <div
             key={fav.id}
-            className="flex justify-between items-center bg-stone-100 p-4 rounded shadow"
+            className="bg-stone-100 p-4 rounded shadow flex flex-col items-center"
           >
-            <div>
-              <Link href={`/serije/${fav.id}`}>
-                <h2 className="text-lg font-semibold text-yellow-400 hover:underline cursor-pointer">
-                  {fav.name}
-                </h2>
-              </Link>
-              <p className="text-sm text-gray-600">Ocjena: {fav.rating}</p>
-            </div>
+            <Link href={`/serije/${fav.id}`}>
+              <Image
+                src={fav.image || "/placeholder.jpg"} // Prikaz postera serije
+                alt={fav.name}
+                width={200} // Širina slike
+                height={300} // Visina slike
+                className="rounded-md mb-2 cursor-pointer"
+                placeholder="blur"
+                blurDataURL="/placeholder.jpg" // Placeholder za učitavanje
+              />
+            </Link>
+            <h2 className="text-lg font-semibold text-yellow-400 text-center">
+              {fav.name}
+            </h2>
+            <p className="text-sm text-gray-600">
+              Ocjena: {fav.rating || "N/A"}
+            </p>
             <button
               onClick={() => handleRemove(fav.id)}
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
             >
               Ukloni
             </button>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
