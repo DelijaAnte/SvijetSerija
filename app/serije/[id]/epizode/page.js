@@ -39,7 +39,19 @@ export default function EpisodesPage({ params }) {
   }, [resolvedParams]);
 
   if (loading) {
-    return <p className="text-gray-600">Loading...</p>;
+    return (
+      <div className="p-4 space-y-4">
+        <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse"></div>
+        {[...Array(5)].map((_, index) => (
+          <div key={index} className="space-y-2 border-b pb-2 animate-pulse">
+            <div className="h-5 bg-gray-300 rounded w-1/2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/5"></div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   if (error) {

@@ -48,20 +48,23 @@ export default function FavoritesPage() {
             key={fav.id}
             className="bg-stone-100 p-4 rounded shadow flex flex-col items-center"
           >
-            <Link href={`/serije/${fav.id}`}>
+            <Link
+              href={`/serije/${fav.id}`}
+              className="flex flex-col items-center"
+            >
               <Image
-                src={fav.image || "/placeholder.jpg"} // Prikaz postera serije
+                src={fav.image || "/placeholder.jpg"}
                 alt={fav.name}
-                width={200} // Širina slike
-                height={300} // Visina slike
+                width={200}
+                height={300}
                 className="rounded-md mb-2 cursor-pointer"
                 placeholder="blur"
-                blurDataURL="/placeholder.jpg" // Placeholder za učitavanje
+                blurDataURL="/placeholder.jpg"
               />
+              <h2 className="text-lg font-semibold text-yellow-400 text-center hover:underline">
+                {fav.name}
+              </h2>
             </Link>
-            <h2 className="text-lg font-semibold text-yellow-400 text-center">
-              {fav.name}
-            </h2>
             <p className="text-sm text-gray-600">
               Ocjena: {fav.rating || "N/A"}
             </p>

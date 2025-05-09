@@ -57,13 +57,15 @@ export default function FavoriteActorsPage() {
             className="flex items-center bg-stone-100 p-4 rounded shadow"
           >
             <div className="flex items-center space-x-4">
-              <Image
-                src={actor.image || "/placeholder.jpg"} // Prikaz slike glumca
-                alt={actor.name}
-                width={50} // Širina slike
-                height={50} // Visina slike
-                className="rounded-full" // Zaobljeni rubovi slike
-              />
+              <Link href={`/serije/id/glumci/${actor.id}`}>
+                <Image
+                  src={actor.image || "/placeholder.jpg"}
+                  alt={actor.name}
+                  width={50}
+                  height={50}
+                  className="rounded-full cursor-pointer"
+                />
+              </Link>
               <Link href={`/serije/id/glumci/${actor.id}`}>
                 <h2 className="text-lg font-semibold text-yellow-400 hover:underline cursor-pointer">
                   {actor.name}
