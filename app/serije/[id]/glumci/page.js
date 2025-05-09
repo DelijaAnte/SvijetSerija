@@ -47,7 +47,21 @@ export default function CastPage({ params }) {
   }, [resolvedParams]);
 
   if (loading) {
-    return <p className="text-gray-600">Loading...</p>;
+    return (
+      <div className="p-4">
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          Glumačka postava
+        </h1>
+        <div className="grid grid-cols-5 gap-4">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <div className="w-32 h-32 mb-2 bg-gray-300 animate-pulse rounded-full" />
+              <div className="w-24 h-4 bg-gray-300 animate-pulse mt-2" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (error) {

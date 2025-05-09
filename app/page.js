@@ -1,105 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import axios from "axios";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import Image from "next/image";
-import Link from "next/link";
+import { Badge } from "@/components/ui/badge"; // Import shadcn komponente
+import GenreFilteredShows from "./components/GenreFilter";
 
 export default function Home() {
-  const [shows, setShows] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
-
-  useEffect(() => {
-    const fetchShows = async () => {
-      try {
-        const { data } = await axios.get("https://api.tvmaze.com/shows");
-        const sortedShows = data
-          .filter((show) => show.rating && show.rating.average !== null)
-          .sort((a, b) => b.rating.average - a.rating.average);
-        setShows(sortedShows);
-      } catch (error) {
-        console.error("Greška pri dohvaćanju serija:", error);
-      }
-    };
-    fetchShows();
-  }, []);
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentShows = shows.slice(startIndex, startIndex + itemsPerPage);
-
   return (
     <div className="p-4">
-      <p className="text-center text-gray-700 mb-4">
-        Ova aplikacija omogućuje pregled informacija o serijama, pomaže
-        korisnicima u donošenju odluke što gledati i pruža uvid u najbolje
-        ocijenjene serije.
+      <p className="text-center text-gray-700 mb-4 flex justify-center space-x-8">
+        <Badge
+          variant="outline"
+          className="w-48 text-lg font-semibold text-black bg-yellow-300 px-4 py-2 rounded-full hover:bg-yellow-400 transition-colors duration-300 flex justify-center"
+        >
+          Najbolje serije
+        </Badge>
+        <Badge
+          variant="outline"
+          className="w-48 text-lg font-semibold text-black bg-yellow-300 px-4 py-2 rounded-full hover:bg-yellow-400 transition-colors duration-300 flex justify-center"
+        >
+          Top glumci
+        </Badge>
+        <Badge
+          variant="outline"
+          className="w-48 text-lg font-semibold text-black bg-yellow-300 px-4 py-2 rounded-full hover:bg-yellow-400 transition-colors duration-300 flex justify-center"
+        >
+          Istraži žanrove
+        </Badge>
       </p>
-
-      <h2 className="text-2xl font-semibold text-center mb-6">
-        Najbolje ocijenjene (klikni za detalje):
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {currentShows.map((show) => (
-          <Link key={show.id} href={`/serije/${show.id}`}>
-            <Card className="bg-stone-100 hover:shadow-lg transition-shadow flex flex-col items-center text-center cursor-pointer">
-              <CardHeader className="flex flex-col justify-center items-center px-4 py-2">
-                <CardTitle className="text-lg font-semibold text-black flex justify-center items-center h-16 w-full">
-                  {show.name}
-                </CardTitle>
-                <CardDescription className="text-sm text-gray-600">
-                  Ocjena: {show.rating.average}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="flex flex-col items-center">
-                <Image
-                  src={show.image?.medium || "/placeholder.jpg"}
-                  alt={show.name}
-                  width={210}
-                  height={295}
-                  className="rounded-md"
-                  priority
-                />
-              </CardContent>
-
-              <CardFooter className="text-sm text-gray-600">
-                <p>{show.genres.join(", ")}</p>
-              </CardFooter>
-            </Card>
-          </Link>
-        ))}
-      </div>
-
-      <div className="flex justify-center mt-4 gap-4">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-yellow-400 rounded hover:bg-yellow-500 disabled:opacity-50"
-        >
-          Prethodna
-        </button>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) =>
-              startIndex + itemsPerPage < shows.length ? prev + 1 : prev
-            )
-          }
-          disabled={startIndex + itemsPerPage >= shows.length}
-          className="px-4 py-2 bg-yellow-400 rounded hover:bg-yellow-500 disabled:opacity-50"
-        >
-          Sljedeća
-        </button>
-      </div>
+      <GenreFilteredShows />
     </div>
   );
 }

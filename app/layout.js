@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
                   <Search />
                 </li>
                 <li>
-                  {/* Popover za Favoriti */}
+                  {/* Popover za Favorite */}
                   <Popover>
                     <PopoverTrigger asChild>
                       <button className="hover:underline">Favoriti</button>
