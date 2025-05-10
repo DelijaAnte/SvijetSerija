@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge"; // Import shadcn komponente
+import { Badge } from "@/components/ui/badge";
 import GenreFilteredShows from "./components/GenreFilter";
 
 export default function Home() {

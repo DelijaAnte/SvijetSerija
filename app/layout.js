@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/popover";
 import Search from "./components/Search";
 import Providers from "./providers";
-import AuthButton from "./components/AuthButton"; // <--- import
+import AuthButton from "./components/AuthButton";
 
 export const metadata = {
   title: "Svijet Serija - Najbolje serije na jednom mjestu",
@@ -73,7 +73,7 @@ export default function RootLayout({ children }) {
                     <BackButton />
                   </li>
                   <li>
-                    <AuthButton /> {/* <--- dodan auth gumb */}
+                    <AuthButton />
                   </li>
                 </ul>
               </nav>
