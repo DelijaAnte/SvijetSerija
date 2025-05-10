@@ -3,12 +3,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function EpisodeDetailsPage({ params }) {
   const [episode, setEpisode] = useState(null);
+  const [allEpisodes, setAllEpisodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [resolvedParams, setResolvedParams] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const resolveParams = async () => {
@@ -24,12 +27,21 @@ export default function EpisodeDetailsPage({ params }) {
 
     const fetchEpisodeDetails = async () => {
       try {
-        const { data } = await axios.get(
-          `https://api.tvmaze.com/episodes/${resolvedParams.episodeId}`
+        // Dohvat epizode sa podacima o seriji
+        const { data: episodeData } = await axios.get(
+          `https://api.tvmaze.com/episodes/${resolvedParams.episodeId}?embed=show`
         );
-        setEpisode(data);
+        setEpisode(episodeData);
+
+        // Dohvat svih epizoda serije
+        if (episodeData._embedded?.show?.id) {
+          const { data: episodesData } = await axios.get(
+            `https://api.tvmaze.com/shows/${episodeData._embedded.show.id}/episodes`
+          );
+          setAllEpisodes(episodesData);
+        }
       } catch (err) {
-        setError("Failed to fetch episode details.");
+        setError("Došlo je do greške pri učitavanju podataka.");
       } finally {
         setLoading(false);
       }
@@ -37,6 +49,63 @@ export default function EpisodeDetailsPage({ params }) {
 
     fetchEpisodeDetails();
   }, [resolvedParams]);
+
+  // Grupiranje epizoda po sezonama
+  const groupEpisodesBySeason = (episodes) => {
+    return episodes.reduce((acc, episode) => {
+      const season = episode.season;
+      if (!acc[season]) acc[season] = [];
+      acc[season].push(episode);
+      return acc;
+    }, {});
+  };
+
+  // Određivanje navigacijskih epizoda
+  const getNavigationEpisodes = () => {
+    if (!episode || allEpisodes.length === 0) return {};
+
+    const seasons = groupEpisodesBySeason(allEpisodes);
+    const seasonNumbers = Object.keys(seasons)
+      .map(Number)
+      .sort((a, b) => a - b);
+    const currentSeason = episode.season;
+    const currentSeasonIndex = seasonNumbers.indexOf(currentSeason);
+
+    const seasonEpisodes = seasons[currentSeason].sort(
+      (a, b) => a.number - b.number
+    );
+    const currentEpisodeIndex = seasonEpisodes.findIndex(
+      (ep) => ep.id === episode.id
+    );
+
+    // Pronalazak prethodne epizode
+    let previousEpisode = null;
+    if (currentEpisodeIndex > 0) {
+      previousEpisode = seasonEpisodes[currentEpisodeIndex - 1];
+    } else if (currentSeasonIndex > 0) {
+      const prevSeason = seasons[seasonNumbers[currentSeasonIndex - 1]];
+      previousEpisode = prevSeason[prevSeason.length - 1];
+    }
+
+    // Pronalazak sljedeće epizode
+    let nextEpisode = null;
+    if (currentEpisodeIndex < seasonEpisodes.length - 1) {
+      nextEpisode = seasonEpisodes[currentEpisodeIndex + 1];
+    } else if (currentSeasonIndex < seasonNumbers.length - 1) {
+      const nextSeason = seasons[seasonNumbers[currentSeasonIndex + 1]];
+      nextEpisode = nextSeason[0];
+    }
+
+    return {
+      hasPrevious: !!previousEpisode,
+      hasNext: !!nextEpisode,
+      previousEpisode,
+      nextEpisode,
+    };
+  };
+
+  const { hasPrevious, hasNext, previousEpisode, nextEpisode } =
+    getNavigationEpisodes();
 
   if (loading) {
     return (
@@ -55,16 +124,17 @@ export default function EpisodeDetailsPage({ params }) {
   }
 
   if (error) {
-    return <p className="text-red-600">{error}</p>;
+    return <p className="p-4 text-red-600">{error}</p>;
   }
 
   if (!episode) {
-    return <p className="text-gray-600">Nema dostupnih podataka o epizodi.</p>;
+    return <p className="p-4 text-gray-600">Epizoda nije pronađena.</p>;
   }
 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">{episode.name}</h1>
+
       {episode.image && (
         <div className="mb-4">
           <Image
@@ -78,31 +148,38 @@ export default function EpisodeDetailsPage({ params }) {
           />
         </div>
       )}
-      <p className="text-gray-600 mb-4">
-        <strong>Sezona:</strong> {episode.season}
-      </p>
-      <p className="text-gray-600 mb-4">
-        <strong>Epizoda:</strong> {episode.number}
-      </p>
-      <p className="text-gray-600 mb-4">
-        <strong>Datum emitiranja:</strong> {episode.airdate}
-      </p>
-      <p className="text-gray-600">
-        {episode.summary?.replace(/<[^>]+>/g, "")}
-      </p>
+
+      <div className="space-y-2 mb-6">
+        <p className="text-gray-600">
+          <strong>Sezona:</strong> {episode.season}
+        </p>
+        <p className="text-gray-600">
+          <strong>Epizoda:</strong> {episode.number}
+        </p>
+        <p className="text-gray-600">
+          <strong>Datum emitiranja:</strong> {episode.airdate}
+        </p>
+        <p className="text-gray-600">
+          <strong>Ocjena:</strong>{" "}
+          {episode.rating?.average
+            ? `${episode.rating.average.toFixed(1)}/10`
+            : "N/A"}
+        </p>
+        <p className="text-gray-600 mt-4">
+          {episode.summary?.replace(/<[^>]+>/g, "") || "Nema opisa."}
+        </p>
+      </div>
+
       <div className="flex justify-between mt-6">
         <button
-          disabled={episode.number === 1}
-          onClick={() => {
-            const prev = episode.number - 1;
-            if (prev > 0) {
-              window.location.href = `/serije/${
-                episode._embedded?.show?.id
-              }/epizode/${episode.id - 1}`;
-            }
-          }}
+          disabled={!hasPrevious}
+          onClick={() =>
+            router.push(
+              `/serije/${episode._embedded.show.id}/epizode/${previousEpisode.id}`
+            )
+          }
           className={`px-4 py-2 rounded-md ${
-            episode.number === 1
+            !hasPrevious
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-yellow-400 hover:bg-yellow-500"
           }`}
@@ -111,12 +188,17 @@ export default function EpisodeDetailsPage({ params }) {
         </button>
 
         <button
-          onClick={() => {
-            window.location.href = `/serije/${
-              episode._embedded?.show?.id
-            }/epizode/${episode.id + 1}`;
-          }}
-          className="px-4 py-2 rounded-md bg-yellow-400 hover:bg-yellow-500"
+          disabled={!hasNext}
+          onClick={() =>
+            router.push(
+              `/serije/${episode._embedded.show.id}/epizode/${nextEpisode.id}`
+            )
+          }
+          className={`px-4 py-2 rounded-md ${
+            !hasNext
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-yellow-400 hover:bg-yellow-500"
+          }`}
         >
           Sljedeća
         </button>
