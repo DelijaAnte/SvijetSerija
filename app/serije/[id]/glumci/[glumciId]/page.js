@@ -12,6 +12,7 @@ export default function ActorDetailsPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [resolvedParams, setResolvedParams] = useState(null);
+  const [sortBy, setSortBy] = useState("default"); // Dodano stanje za sortiranje
 
   useEffect(() => {
     const resolveParams = async () => {
@@ -45,6 +46,38 @@ export default function ActorDetailsPage({ params }) {
 
     fetchActorDetails();
   }, [resolvedParams]);
+
+  // Dodana funkcija za sortiranje serija
+  const sortShows = (showsToSort) => {
+    switch (sortBy) {
+      case "year-asc":
+        return [...showsToSort].sort((a, b) => {
+          const yearA = a.premiered ? parseInt(a.premiered.split("-")[0]) : 0;
+          const yearB = b.premiered ? parseInt(b.premiered.split("-")[0]) : 0;
+          return yearA - yearB;
+        });
+      case "year-desc":
+        return [...showsToSort].sort((a, b) => {
+          const yearA = a.premiered ? parseInt(a.premiered.split("-")[0]) : 0;
+          const yearB = b.premiered ? parseInt(b.premiered.split("-")[0]) : 0;
+          return yearB - yearA;
+        });
+      case "rating-asc":
+        return [...showsToSort].sort((a, b) => {
+          const ratingA = a.rating?.average || 0;
+          const ratingB = b.rating?.average || 0;
+          return ratingA - ratingB;
+        });
+      case "rating-desc":
+        return [...showsToSort].sort((a, b) => {
+          const ratingA = a.rating?.average || 0;
+          const ratingB = b.rating?.average || 0;
+          return ratingB - ratingA;
+        });
+      default:
+        return showsToSort;
+    }
+  };
 
   if (loading) {
     return (
@@ -155,13 +188,38 @@ export default function ActorDetailsPage({ params }) {
 
               {/* Serije */}
               <div className="mt-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4 pb-2 border-b">
-                  Serije u kojima je glumio/la
-                </h2>
+                <div className="flex justify-between items-center mb-4 pb-2 border-b">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Serije u kojima je glumio/la
+                  </h2>
+                  {/* Dropdown za sortiranje */}
+                  <div className="relative">
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="block appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    >
+                      <option value="default">Sortiraj po</option>
+                      <option value="year-asc">Godina (najstarije)</option>
+                      <option value="year-desc">Godina (najnovije)</option>
+                      <option value="rating-asc">Rating (najniži)</option>
+                      <option value="rating-desc">Rating (najviši)</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg
+                        className="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
 
                 {shows.length > 0 ? (
                   <div className="space-y-4">
-                    {shows.map((show, index) => (
+                    {sortShows(shows).map((show, index) => (
                       <div
                         key={`${show.id}-${index}`}
                         className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
@@ -185,6 +243,15 @@ export default function ActorDetailsPage({ params }) {
                               small
                               label="Premijera"
                               value={show.premiered || "N/A"}
+                            />
+                            <DetailItem
+                              small
+                              label="Rating"
+                              value={
+                                show.rating?.average
+                                  ? `${show.rating.average}/10`
+                                  : "N/A"
+                              }
                             />
                           </div>
                         </Link>
