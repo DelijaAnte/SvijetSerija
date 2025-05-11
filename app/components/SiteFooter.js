@@ -1,12 +1,11 @@
-// components/SiteFooter.js
-export default function SiteFooter() {
+export default function Footer() {
   return (
-    <footer className="bg-stone-100 text-black py-3 text-center text-xs border-t border-stone-200">
+    <footer className="bg-stone-100 text-black py-3 text-center text-xs border-t border-stone-200 w-full mt-auto">
       <div className="container mx-auto px-4">
         <p className="font-light">
           Podaci sa{" "}
           <a
-            href="https://www.tvmaze.com/api"
+            href="https://www.tvmaze.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:no-underline font-medium"

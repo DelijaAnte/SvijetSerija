@@ -25,8 +25,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className="h-full">
+      <body className="min-h-screen flex flex-col">
         <Providers>
           <header className="bg-yellow-400 text-black py-4">
             <div className="container mx-auto px-4 flex justify-between items-center">
@@ -77,7 +77,7 @@ export default function RootLayout({ children }) {
           </header>
 
           <Toaster />
-          <main>{children}</main>
+          <main className="flex-grow">{children}</main>
           <SiteFooter />
         </Providers>
       </body>
