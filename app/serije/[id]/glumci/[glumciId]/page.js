@@ -12,7 +12,7 @@ export default function ActorDetailsPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [resolvedParams, setResolvedParams] = useState(null);
-  const [sortBy, setSortBy] = useState("default"); // Dodano stanje za sortiranje
+  const [sortBy, setSortBy] = useState("default");
 
   useEffect(() => {
     const resolveParams = async () => {
