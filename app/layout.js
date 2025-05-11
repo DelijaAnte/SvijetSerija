@@ -10,6 +10,7 @@ import {
 import Search from "./components/Search";
 import Providers from "./providers";
 import AuthButton from "./components/AuthButton";
+import SiteFooter from "./components/SiteFooter";
 
 export const metadata = {
   title: "Svijet Serija - Najbolje serije na jednom mjestu",
@@ -77,6 +78,7 @@ export default function RootLayout({ children }) {
 
           <Toaster />
           <main>{children}</main>
+          <SiteFooter />
         </Providers>
       </body>
     </html>
