@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 
 export default function BackButton() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function BackButton() {
       onClick={handleClick}
       className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded-md transition-colors"
     >
-      Natrag
+      <ArrowLeft className="w-6 h-6 text-black" />
     </button>
   );
 }

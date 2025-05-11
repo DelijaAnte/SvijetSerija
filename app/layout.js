@@ -35,11 +35,6 @@ export default function RootLayout({ children }) {
               <nav>
                 <ul className="flex space-x-4 items-center">
                   <li>
-                    <Link href="/" className="hover:underline">
-                      Početna
-                    </Link>
-                  </li>
-                  <li>
                     <Search />
                   </li>
                   <li>
@@ -70,10 +65,10 @@ export default function RootLayout({ children }) {
                     </Popover>
                   </li>
                   <li>
-                    <BackButton />
+                    <AuthButton />
                   </li>
                   <li>
-                    <AuthButton />
+                    <BackButton />
                   </li>
                 </ul>
               </nav>
