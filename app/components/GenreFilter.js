@@ -75,10 +75,12 @@ export default function GenreFilteredShows() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {currentShows.map((show) => (
           <Link key={show.id} href={`/serije/${show.id}`}>
-            <Card className="bg-stone-100 hover:shadow-lg transition-shadow flex flex-col items-center text-center cursor-pointer">
-              <CardHeader className="flex flex-col justify-center items-center px-4 py-2">
+            <Card className="bg-stone-100 hover:shadow-lg transition-shadow flex flex-col items-center text-center cursor-pointer h-full">
+              <CardHeader className="flex flex-col justify-center items-center px-4 py-2 w-full">
                 <CardTitle className="text-lg font-semibold text-black flex justify-center items-center h-16 w-full">
-                  {show.name}
+                  {show.name.split(" ").length > 3
+                    ? `${show.name.split(" ").slice(0, 3).join(" ")}...`
+                    : show.name}
                 </CardTitle>
                 <CardDescription className="text-sm text-gray-600">
                   Ocjena: {show.rating.average}
