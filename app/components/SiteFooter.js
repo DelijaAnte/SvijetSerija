@@ -5,7 +5,7 @@ export default function Footer() {
         <p className="font-light">
           Podaci sa{" "}
           <a
-            href="https://www.tvmaze.com/"
+            href="https://www.tvmaze.com/api"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:no-underline font-medium"
