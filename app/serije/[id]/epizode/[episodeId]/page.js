@@ -150,7 +150,6 @@ export default function EpisodeDetailsPage({ params }) {
       <div className="max-w-4xl mx-auto px-4">
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="p-6">
-            {/* Naslov i osnovne informacije */}
             <div className="mb-6">
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 {episode.name}
@@ -170,7 +169,6 @@ export default function EpisodeDetailsPage({ params }) {
               </div>
             </div>
 
-            {/* Slika epizode */}
             {episode.image && (
               <div className="mb-6">
                 <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
@@ -221,7 +219,6 @@ export default function EpisodeDetailsPage({ params }) {
               </div>
             </div>
 
-            {/* Navigacijske tipke */}
             <div className="flex justify-between mt-8">
               <button
                 disabled={!hasPrevious}

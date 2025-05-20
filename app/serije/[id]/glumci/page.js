@@ -86,7 +86,7 @@ export default function CastPage({ params }) {
     return (
       <div className="p-8 text-center">
         <p className="text-gray-600 text-lg">
-          Trenutno nema dostupnih podataka o glumcima.
+          Trenutno nema dostupnih podataka o glumcima
         </p>
       </div>
     );

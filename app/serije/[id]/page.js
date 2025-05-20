@@ -74,7 +74,7 @@ export default function ShowDetails({ params }) {
   if (!show) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600 text-lg">No show data available.</p>
+        <p className="text-gray-600 text-lg">Nema podataka o seriji</p>
       </div>
     );
   }
@@ -82,9 +82,7 @@ export default function ShowDetails({ params }) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto p-4 md:p-6">
-        {/* Header section */}
         <div className="flex flex-col md:flex-row gap-8 mb-8">
-          {/* Show image */}
           <div className="w-full md:w-1/3 lg:w-1/4">
             <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-lg">
               <Image
@@ -103,11 +101,9 @@ export default function ShowDetails({ params }) {
             </div>
           </div>
 
-          {/* Show details */}
           <div className="w-full md:w-2/3 lg:w-3/4">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">{show.name}</h1>
 
-            {/* Genres */}
             {show.genres.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {show.genres.map((genre) => (
@@ -121,7 +117,6 @@ export default function ShowDetails({ params }) {
               </div>
             )}
 
-            {/* Summary */}
             {show.summary && (
               <div
                 className="prose max-w-none mb-6 text-gray-700"
@@ -129,7 +124,6 @@ export default function ShowDetails({ params }) {
               />
             )}
 
-            {/* Details grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
               <DetailCard
                 label="Ocjena"
@@ -173,7 +167,6 @@ export default function ShowDetails({ params }) {
               )}
             </div>
 
-            {/* Action buttons */}
             <div className="flex flex-wrap gap-4">
               <Link
                 href={`/serije/${resolvedParams?.id}/glumci`}

@@ -47,7 +47,6 @@ export default function ActorDetailsPage({ params }) {
     fetchActorDetails();
   }, [resolvedParams]);
 
-  // Dodana funkcija za sortiranje serija
   const sortShows = (showsToSort) => {
     switch (sortBy) {
       case "year-asc":
@@ -135,9 +134,7 @@ export default function ActorDetailsPage({ params }) {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4">
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          {/* Glavni sadržaj */}
           <div className="flex flex-col md:flex-row">
-            {/* Slika glumca */}
             <div className="w-full md:w-1/3 p-6">
               <div className="relative aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
                 {actor.image ? (
@@ -152,7 +149,7 @@ export default function ActorDetailsPage({ params }) {
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-500">No image available</span>
+                    <span className="text-gray-500">Nema dostupne slike</span>
                   </div>
                 )}
               </div>
@@ -168,7 +165,6 @@ export default function ActorDetailsPage({ params }) {
               </div>
             </div>
 
-            {/* Detalji o glumcu */}
             <div className="w-full md:w-2/3 p-6">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 {actor.name}
@@ -186,13 +182,11 @@ export default function ActorDetailsPage({ params }) {
                 <DetailItem label="Spol" value={actor.gender || "N/A"} />
               </div>
 
-              {/* Serije */}
               <div className="mt-8">
                 <div className="flex justify-between items-center mb-4 pb-2 border-b">
                   <h2 className="text-2xl font-bold text-gray-900">
                     Serije u kojima je glumio/la
                   </h2>
-                  {/* Dropdown za sortiranje */}
                   <div className="relative">
                     <select
                       value={sortBy}
