@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Svijet Serija
 
-## Getting Started
+**Svijet Serija** je moderna web aplikacija za pregled i pretragu serija, glumaca i epizoda, s detaljnim informacijama o svakom sadržaju. Korisnicima omogućuje i spremanje omiljenih serija i glumaca putem vlastitih API ruta. Aplikacija je optimizirana i testirana te postiže odlične rezultate na Lighthouse testiranjima.
 
-First, run the development server:
+## 🔗 Link aplikacije
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[svijet-serija.vercel.app](https://svijet-serija.vercel.app)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Tehnologije korištene
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- [Next.js](https://nextjs.org/) – React framework za SSR i brzu izradu aplikacija
+- [Tailwind CSS](https://tailwindcss.com/) – CSS framework za brzu i responzivnu izradu dizajna
+- [Vercel](https://vercel.com/) – Platforma za deployment
+- [shadcn/ui](https://ui.shadcn.com/) – Komponente za korisničko sučelje
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧩 Funkcionalnosti
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Pretraga i pregled serija, glumaca i epizoda
+- Prikaz detalja za svaku seriju i glumca
+- Spremanje serija i glumaca u favorite (po korisniku)
+- Brzo i responzivno korisničko sučelje
+- Vlastite API rute za upravljanje favoritima
+- Visoke performanse (testirano s Lighthouse)
