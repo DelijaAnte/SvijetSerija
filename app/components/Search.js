@@ -50,7 +50,7 @@ export default function Search() {
           })
         );
 
-        setResults(filtered.filter(Boolean)); // ukloni null vrijednosti
+        setResults(filtered.filter(Boolean));
       }
     };
 

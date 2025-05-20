@@ -2,22 +2,27 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image"; // Import Next.js Image komponentu
-import { toast } from "sonner"; // Importujte toast funkciju
+import Image from "next/image";
+import { toast } from "sonner";
 
 export default function FavoriteActorsPage() {
   const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Dohvaća favorite glumce s API-ja
     fetch("/api/favorites/actors")
       .then((res) => res.json())
-      .then((data) => setFavorites(data))
-      .catch((err) => console.error("Failed to fetch favorite actors:", err));
+      .then((data) => {
+        setFavorites(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch favorite actors:", err);
+        setIsLoading(false);
+      });
   }, []);
 
   const handleRemove = (id) => {
-    // Briše glumca iz favorita
     fetch(`/api/favorites/actors?id=${id}`, { method: "DELETE" })
       .then((res) => {
         if (!res.ok) {
@@ -26,61 +31,107 @@ export default function FavoriteActorsPage() {
         return res.json();
       })
       .then((data) => {
-        setFavorites(data.favorites || []); // Osigurajte da je `favorites` niz
-        toast.success("Glumac je uspješno uklonjen iz favorita!"); // Prikaz obavijesti
+        setFavorites(data.favorites || []);
+        toast.success("Glumac je uspješno uklonjen iz favorita!");
       })
       .catch((err) => {
         console.error("Failed to remove favorite actor:", err);
-        toast.error("Došlo je do greške prilikom uklanjanja glumca."); // Prikaz greške
+        toast.error("Došlo je do greške prilikom uklanjanja glumca.");
       });
   };
 
-  if (favorites.length === 0) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p className="text-3xl font-bold text-gray-600">
-          Nema favoriziranih glumaca.
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500"></div>
+      </div>
+    );
+  }
+
+  if (favorites.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-50 p-6 text-center">
+        <div className="bg-yellow-100 p-6 rounded-full mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-16 w-16 text-yellow-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-700 mb-2">
+          Nema favoriziranih glumaca
+        </h2>
+        <p className="text-gray-500">
+          Dodajte glumce u favorite kako biste ih vidjeli ovdje
         </p>
       </div>
     );
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold text-center mb-4">
-        Favorizirani Glumci
-      </h1>
-      <ul className="space-y-4">
-        {favorites.map((actor) => (
-          <li
-            key={actor.id}
-            className="flex items-center bg-stone-100 p-4 rounded shadow"
-          >
-            <div className="flex items-center space-x-4">
-              <Link href={`/serije/id/glumci/${actor.id}`}>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            Favorizirani Glumci
+          </h1>
+          <p className="mt-3 text-xl text-gray-500">
+            {favorites.length} {favorites.length === 1 ? "glumac" : "glumaca"} u
+            vašoj listi
+          </p>
+        </div>
+
+        <div className="bg-white shadow overflow-hidden rounded-lg divide-y divide-gray-200">
+          {favorites.map((actor) => (
+            <div
+              key={actor.id}
+              className="px-6 py-4 flex items-center hover:bg-gray-50 transition-colors"
+            >
+              <Link
+                href={`/serije/id/glumci/${actor.id}`}
+                className="flex-shrink-0"
+              >
                 <Image
                   src={actor.image || "/placeholder.jpg"}
                   alt={actor.name}
-                  width={50}
-                  height={50}
-                  className="rounded-full cursor-pointer"
+                  width={64}
+                  height={64}
+                  className="rounded-full object-cover h-16 w-16 border-2 border-yellow-400"
                 />
               </Link>
-              <Link href={`/serije/id/glumci/${actor.id}`}>
-                <h2 className="text-lg font-semibold text-yellow-400 hover:underline cursor-pointer">
-                  {actor.name}
-                </h2>
-              </Link>
+
+              <div className="ml-4 flex-1 min-w-0">
+                <Link href={`/serije/id/glumci/${actor.id}`}>
+                  <h2 className="text-lg font-bold text-gray-900 hover:text-yellow-500 transition-colors truncate">
+                    {actor.name}
+                  </h2>
+                </Link>
+                {actor.character && (
+                  <p className="text-sm text-gray-500 truncate">
+                    {actor.character}
+                  </p>
+                )}
+              </div>
+
+              <button
+                onClick={() => handleRemove(actor.id)}
+                className="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+              >
+                Ukloni
+              </button>
             </div>
-            <button
-              onClick={() => handleRemove(actor.id)}
-              className="ml-auto px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-            >
-              Ukloni
-            </button>
-          </li>
-        ))}
-      </ul>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
