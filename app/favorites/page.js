@@ -13,7 +13,14 @@ export default function FavoritesPage() {
     fetch("/api/favorites")
       .then((res) => res.json())
       .then((data) => {
-        setFavorites(data);
+        if (Array.isArray(data)) {
+          setFavorites(data);
+        } else if (Array.isArray(data.favorites)) {
+          setFavorites(data.favorites);
+        } else {
+          console.warn("Neočekivan format odgovora:", data);
+          setFavorites([]);
+        }
         setIsLoading(false);
       })
       .catch((err) => {
@@ -26,7 +33,11 @@ export default function FavoritesPage() {
     fetch(`/api/favorites?id=${id}`, { method: "DELETE" })
       .then((res) => res.json())
       .then((data) => {
-        setFavorites(data.favorites);
+        if (Array.isArray(data)) {
+          setFavorites(data);
+        } else if (Array.isArray(data.favorites)) {
+          setFavorites(data.favorites);
+        }
         toast.success("Serija je uspješno uklonjena iz favorita!");
       })
       .catch((err) => {

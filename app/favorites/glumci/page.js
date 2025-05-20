@@ -13,29 +13,33 @@ export default function FavoriteActorsPage() {
     fetch("/api/favorites/actors")
       .then((res) => res.json())
       .then((data) => {
-        setFavorites(data);
+        // Sigurna provjera da je stigao niz
+        if (Array.isArray(data)) {
+          setFavorites(data);
+        } else {
+          console.warn("Neočekivan format podataka:", data);
+          setFavorites([]);
+        }
         setIsLoading(false);
       })
       .catch((err) => {
-        console.error("Failed to fetch favorite actors:", err);
+        console.error("Greška pri dohvaćanju favorita:", err);
         setIsLoading(false);
       });
   }, []);
 
   const handleRemove = (id) => {
     fetch(`/api/favorites/actors?id=${id}`, { method: "DELETE" })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
-        setFavorites(data.favorites || []);
+        const updatedFavorites = Array.isArray(data.favorites)
+          ? data.favorites
+          : [];
+        setFavorites(updatedFavorites);
         toast.success("Glumac je uspješno uklonjen iz favorita!");
       })
       .catch((err) => {
-        console.error("Failed to remove favorite actor:", err);
+        console.error("Greška pri uklanjanju glumca:", err);
         toast.error("Došlo je do greške prilikom uklanjanja glumca.");
       });
   };
@@ -48,7 +52,7 @@ export default function FavoriteActorsPage() {
     );
   }
 
-  if (favorites.length === 0) {
+  if (!Array.isArray(favorites) || favorites.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-50 p-6 text-center">
         <div className="bg-yellow-100 p-6 rounded-full mb-4">
@@ -71,7 +75,7 @@ export default function FavoriteActorsPage() {
           Nema favoriziranih glumaca
         </h2>
         <p className="text-gray-500">
-          Dodajte glumce u favorite kako biste ih vidjeli ovdje
+          Dodajte glumce u favorite kako biste ih vidjeli ovdje.
         </p>
       </div>
     );

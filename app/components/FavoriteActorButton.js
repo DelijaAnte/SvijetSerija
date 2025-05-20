@@ -1,75 +1,56 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 export default function FavoriteActorButton({ actor }) {
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
   const [isFavorite, setIsFavorite] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkIfFavorite = async () => {
-      try {
-        const response = await fetch("/api/favorites/actors");
-        if (response.ok) {
-          const favorites = await response.json();
-          const isAlreadyFavorite = favorites.some(
-            (fav) => fav.id === actor.id
-          );
-          setIsFavorite(isAlreadyFavorite);
-        } else {
-          console.error("Failed to fetch favorite actors");
-        }
-      } catch (err) {
-        console.error("Error fetching favorite actors:", err);
-      } finally {
-        setLoading(false);
-      }
+    if (!userEmail) return;
+    const checkFavorite = async () => {
+      const res = await fetch("/api/favorites/actors");
+      const data = await res.json();
+      const exists = Array.isArray(data)
+        ? data.some((item) => item.id === actor.id)
+        : false;
+      setIsFavorite(exists);
     };
-
-    checkIfFavorite();
-  }, [actor.id]);
+    checkFavorite();
+  }, [userEmail, actor.id]);
 
   const handleChange = async (checked) => {
-    if (checked) {
-      try {
-        const response = await fetch("/api/favorites/actors", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: actor.id,
-            name: actor.name,
-            image: actor.image?.medium,
-          }),
-        });
+    if (!userEmail) {
+      toast.error("Prvo se moraš prijaviti.");
+      return;
+    }
 
-        if (response.ok) {
-          setIsFavorite(true);
-          toast.success(`${actor.name} je dodan u favorite.`);
-        } else {
-          toast.error("Dodavanje glumca nije uspjelo.");
-        }
-      } catch (err) {
-        console.error("Error adding actor:", err);
-        toast.error("Greška pri dodavanju glumca.");
+    if (checked) {
+      const res = await fetch("/api/favorites/actors", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: actor.id, name: actor.name }),
+      });
+      if (res.ok) {
+        setIsFavorite(true);
+        toast.success(`${actor.name} je dodan u favorite.`);
+      } else {
+        toast.error("Greška prilikom dodavanja u favorite.");
       }
     } else {
-      try {
-        const response = await fetch(`/api/favorites/actors?id=${actor.id}`, {
-          method: "DELETE",
-        });
-
-        if (response.ok) {
-          setIsFavorite(false);
-          toast.success(`${actor.name} je uklonjen iz favorita.`);
-        } else {
-          toast.error("Uklanjanje glumca nije uspjelo.");
-        }
-      } catch (err) {
-        console.error("Error removing actor:", err);
-        toast.error("Greška pri uklanjanju glumca.");
+      const res = await fetch(`/api/favorites/actors?id=${actor.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setIsFavorite(false);
+        toast.success(`${actor.name} je uklonjen iz favorita.`);
+      } else {
+        toast.error("Greška prilikom uklanjanja iz favorita.");
       }
     }
   };
@@ -80,7 +61,6 @@ export default function FavoriteActorButton({ actor }) {
         id={`favorite-actor-${actor.id}`}
         checked={isFavorite}
         onCheckedChange={handleChange}
-        disabled={loading}
       />
       <Label htmlFor={`favorite-actor-${actor.id}`}>
         {isFavorite ? "U favoritima" : "Nije u favoritima"}
