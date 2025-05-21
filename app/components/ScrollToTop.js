@@ -1,4 +1,4 @@
-"use client"; // Za Next.js App Router
+"use client";
 
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";

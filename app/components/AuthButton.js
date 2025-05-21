@@ -8,10 +8,10 @@ export default function AuthButton() {
   if (session) {
     return (
       <div className="flex items-center space-x-2">
-        <p className="text-sm">Bok, {session.user.name}</p>
+        <p className="text-gray-900 font-bold">Bok, {session.user.name}</p>
         <button
           onClick={() => signOut()}
-          className="text-red-500 hover:underline"
+          className="text-red-500 hover:underline font-bold"
         >
           Odjavi se
         </button>
@@ -22,7 +22,7 @@ export default function AuthButton() {
   return (
     <button
       onClick={() => signIn("github")}
-      className="text-blue-500 hover:underline"
+      className="text-gray-900 hover:underline font-bold"
     >
       Prijavi se preko GitHuba
     </button>
