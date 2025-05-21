@@ -11,6 +11,7 @@ import Search from "./components/Search";
 import Providers from "./providers";
 import AuthButton from "./components/AuthButton";
 import SiteFooter from "./components/SiteFooter";
+import ScrollToTop from "./components/ScrollToTop";
 
 export const metadata = {
   title: "Svijet Serija - Najbolje serije na jednom mjestu",
@@ -78,6 +79,7 @@ export default function RootLayout({ children }) {
 
           <Toaster />
           <main className="flex-grow">{children}</main>
+          <ScrollToTop />
           <SiteFooter />
         </Providers>
       </body>
