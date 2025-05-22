@@ -1,8 +1,10 @@
+# Svijet Serija
+
 **Svijet Serija** je moderna web aplikacija za pregled i pretragu serija, glumaca i epizoda, s detaljnim informacijama o svakom sadržaju. Korisnicima omogućuje i spremanje omiljenih serija i glumaca putem vlastitih API ruta. Aplikacija je optimizirana za performanse i testirana pomoću Lighthouse alata.
 
 ## 🔗 Link aplikacije
 
-[https://svijet-serija.vercel.app](https://svijet-serija.vercel.app)
+👉 [https://svijet-serija.vercel.app](https://svijet-serija.vercel.app)
 
 ## ⚙️ Tehnologije korištene
 
@@ -32,16 +34,22 @@ git clone https://github.com/tvoje-korisnicko-ime/svijet-serija.git
 cd svijet-serija
 npm install
 npm run dev
-Napomena: Kreiraj .env.local datoteku i unesi sljedeće varijable:
- GITHUB_ID=Ov23lirLGVOGopXxGmNE
- GITHUB_SECRET=da079459cd31e8f3a679fb781ad6ba4a9ac2a6d8
- NEXTAUTH_SECRET=a1c0e2f3b4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7
- NEXTAUTH_URL=http://localhost:3000
+```
+
+📌 **Napomena**: Kreiraj `.env.local` datoteku i unesi sljedeće varijable:
+
+```env
+GITHUB_ID=Ov23lirLGVOGopXxGmNE
+GITHUB_SECRET=da079459cd31e8f3a679fb781ad6ba4a9ac2a6d8
+NEXTAUTH_SECRET=a1c0e2f3b4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7
+NEXTAUTH_URL=http://localhost:3000
 ```
 
 ## 🚀 Build & Deploy
 
-Lokalni build
+Lokalni build:
 
+```bash
 npm run build
 npm run start
+```
