@@ -30,7 +30,7 @@
 ## 🛠️ Lokalno pokretanje aplikacije
 
 ```bash
-git clone https://github.com/tvoje-korisnicko-ime/svijet-serija.git
+git clone https://github.com/DelijaAnte/SvijetSerija.git
 cd svijet-serija
 npm install
 npm run dev
