@@ -1,3 +1,7 @@
+/**
+ * Stranica koja prikazuje kompletne informacije o seriji uključujući sliku, žanrove, opis i dodatne detalje.
+ * Omogućuje dodavanje u favorite i navigaciju na povezane sadržaje (glumci, epizode).
+ */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -17,10 +21,10 @@ export default function ShowDetails({ params }) {
       const resolved = await params;
       setResolvedParams(resolved);
     };
-
     resolveParams();
   }, [params]);
 
+  // Dohvaćanje podataka o seriji nakon što su parametri dostupni
   useEffect(() => {
     if (!resolvedParams) return;
 
@@ -40,6 +44,7 @@ export default function ShowDetails({ params }) {
     fetchShowDetails();
   }, [resolvedParams]);
 
+  // Prikaz poruke o grešci u slučaju neuspješnog dohvaćanja podataka
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -56,6 +61,7 @@ export default function ShowDetails({ params }) {
     );
   }
 
+  // Skeleton loading prikaz dok čekamo podatke s API-ja
   if (loading) {
     return (
       <div className="p-4 animate-pulse space-y-4 max-w-4xl mx-auto">
@@ -71,6 +77,7 @@ export default function ShowDetails({ params }) {
     );
   }
 
+  // Fallback prikaz ako podaci nisu dohvaćeni
   if (!show) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -79,10 +86,12 @@ export default function ShowDetails({ params }) {
     );
   }
 
+  // Glavni prikaz stranice s detaljima serije
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto p-4 md:p-6">
         <div className="flex flex-col md:flex-row gap-8 mb-8">
+          {/* Lijeva kolona – slika i gumb za favorite */}
           <div className="w-full md:w-1/3 lg:w-1/4">
             <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-lg">
               <Image
@@ -101,6 +110,7 @@ export default function ShowDetails({ params }) {
             </div>
           </div>
 
+          {/* Desna kolona – osnovne informacije, žanrovi i opis */}
           <div className="w-full md:w-2/3 lg:w-3/4">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">{show.name}</h1>
 
@@ -124,6 +134,7 @@ export default function ShowDetails({ params }) {
               />
             )}
 
+            {/* Karta s dodatnim informacijama o seriji */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
               <DetailCard
                 label="Ocjena"
@@ -167,6 +178,7 @@ export default function ShowDetails({ params }) {
               )}
             </div>
 
+            {/* Navigacijski linkovi na povezani sadržaj */}
             <div className="flex flex-wrap gap-4">
               <Link
                 href={`/serije/${resolvedParams?.id}/glumci`}
@@ -188,6 +200,7 @@ export default function ShowDetails({ params }) {
   );
 }
 
+// Pomoćna komponenta za prikaz jednog para
 function DetailCard({ label, value }) {
   return (
     <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">

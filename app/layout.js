@@ -1,3 +1,8 @@
+/**
+ * Root layout komponenta koja definira osnovnu strukturu aplikacije.
+ * Sadrži globalne meta podatke, providers, header, main content i footer.
+ * Ovo je glavni template koji se primjenjuje na sve stranice u aplikaciji.
+ */
 import "./globals.css";
 import Link from "next/link";
 import BackButton from "./components/BackButton";

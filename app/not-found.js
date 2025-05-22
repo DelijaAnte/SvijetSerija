@@ -1,3 +1,6 @@
+/**
+ * Custom 404 stranica koja se prikazuje kada korisnik pokuša pristupiti nepostojećem URL-u.
+ */
 import Link from "next/link";
 
 export default function NotFound() {

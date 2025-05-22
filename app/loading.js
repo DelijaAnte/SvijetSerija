@@ -1,3 +1,6 @@
+/**
+ * Globalni loading placeholder (dodatna provjera uz ugrađene loading state-ove u stranicama).
+ */
 import React from "react";
 
 export default function Loading() {

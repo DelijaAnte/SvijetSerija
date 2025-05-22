@@ -1,3 +1,6 @@
+/**
+ * Početna stranica koja prikazuje animiranu traku s oznakama i filtrirane serije po žanrovima.
+ */
 "use client";
 
 import { Badge } from "@/components/ui/badge";

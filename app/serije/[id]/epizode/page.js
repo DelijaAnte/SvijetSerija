@@ -1,4 +1,7 @@
 "use client";
+/**
+ * Stranica koja prikazuje popis epizoda za određenu seriju.
+ */
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -19,6 +22,7 @@ export default function EpisodesPage({ params }) {
     resolveParams();
   }, [params]);
 
+  // Dohvaćanje podataka nakon što su parametri dostupni
   useEffect(() => {
     if (!resolvedParams) return;
 
@@ -38,6 +42,7 @@ export default function EpisodesPage({ params }) {
     fetchEpisodes();
   }, [resolvedParams]);
 
+  // Skeleton loading prikaz dok čekamo podatke s API-ja
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto p-6 animate-pulse">
@@ -58,6 +63,7 @@ export default function EpisodesPage({ params }) {
     );
   }
 
+  // Prikaz poruke o grešci u slučaju neuspješnog dohvaćanja podataka
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -74,6 +80,7 @@ export default function EpisodesPage({ params }) {
     );
   }
 
+  // Render poruke ako nema epizoda
   if (!episodes || episodes.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">

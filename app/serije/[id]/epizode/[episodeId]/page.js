@@ -1,3 +1,7 @@
+/**
+ * Stranica koja prikazuje detalje o određenoj epizodi serije.
+ * Sadrži paginaciju za prethodnu i sljedeću epizodu.
+ */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -18,10 +22,10 @@ export default function EpisodeDetailsPage({ params }) {
       const resolved = await params;
       setResolvedParams(resolved);
     };
-
     resolveParams();
   }, [params]);
 
+  // Dohvaćanje podataka nakon što su parametri dostupni
   useEffect(() => {
     if (!resolvedParams) return;
 
@@ -48,6 +52,7 @@ export default function EpisodeDetailsPage({ params }) {
     fetchEpisodeDetails();
   }, [resolvedParams]);
 
+  // Grupiranje epizoda po sezonama u objekt
   const groupEpisodesBySeason = (episodes) => {
     return episodes.reduce((acc, episode) => {
       const season = episode.season;
@@ -57,6 +62,7 @@ export default function EpisodeDetailsPage({ params }) {
     }, {});
   };
 
+  //Funkcija za pronalazak prethodne i sljedeće epizode u seriji (za navigaciju)
   const getNavigationEpisodes = () => {
     if (!episode || allEpisodes.length === 0) return {};
 
@@ -74,6 +80,7 @@ export default function EpisodeDetailsPage({ params }) {
       (ep) => ep.id === episode.id
     );
 
+    // Prethodna epizoda
     let previousEpisode = null;
     if (currentEpisodeIndex > 0) {
       previousEpisode = seasonEpisodes[currentEpisodeIndex - 1];
@@ -82,6 +89,7 @@ export default function EpisodeDetailsPage({ params }) {
       previousEpisode = prevSeason[prevSeason.length - 1];
     }
 
+    // Sljedeća epizoda
     let nextEpisode = null;
     if (currentEpisodeIndex < seasonEpisodes.length - 1) {
       nextEpisode = seasonEpisodes[currentEpisodeIndex + 1];
@@ -98,6 +106,7 @@ export default function EpisodeDetailsPage({ params }) {
     };
   };
 
+  // Dohvati podatke o prethodnoj i sljedećoj epizodi
   const { hasPrevious, hasNext, previousEpisode, nextEpisode } =
     getNavigationEpisodes();
 
@@ -121,6 +130,7 @@ export default function EpisodeDetailsPage({ params }) {
     );
   }
 
+  // Prikaz poruke o grešci u slučaju neuspješnog dohvaćanja podataka
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -150,6 +160,7 @@ export default function EpisodeDetailsPage({ params }) {
       <div className="max-w-4xl mx-auto px-4">
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="p-6">
+            {/* Naslov epizode i osnovni podaci */}
             <div className="mb-6">
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 {episode.name}
@@ -169,6 +180,7 @@ export default function EpisodeDetailsPage({ params }) {
               </div>
             </div>
 
+            {/* Slika epizode, ako postoji */}
             {episode.image && (
               <div className="mb-6">
                 <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
@@ -184,7 +196,7 @@ export default function EpisodeDetailsPage({ params }) {
               </div>
             )}
 
-            {/* Detalji epizode */}
+            {/* Detalji epizode: datum, trajanje */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="space-y-4">
                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -219,6 +231,7 @@ export default function EpisodeDetailsPage({ params }) {
               </div>
             </div>
 
+            {/* Navigacijski gumbi za prethodnu i sljedeću epizodu */}
             <div className="flex justify-between mt-8">
               <button
                 disabled={!hasPrevious}

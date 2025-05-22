@@ -1,3 +1,7 @@
+/**
+ * Stranica koja prikazuje carousel s glumačkom postavom serije.
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -24,10 +28,10 @@ export default function CastPage({ params }) {
       const resolved = await params;
       setResolvedParams(resolved);
     };
-
     resolveParams();
   }, [params]);
 
+  // Dohvaćanje glumačke postave kad su parametri spremni
   useEffect(() => {
     if (!resolvedParams) return;
 
@@ -49,6 +53,7 @@ export default function CastPage({ params }) {
     fetchCast();
   }, [resolvedParams]);
 
+  // Skeleton loading prikaz dok čekamo podatke s API-ja
   if (loading) {
     return (
       <div className="p-8 max-w-6xl mx-auto">
@@ -68,6 +73,7 @@ export default function CastPage({ params }) {
     );
   }
 
+  // Prikaz poruke o grešci u slučaju neuspješnog dohvaćanja podataka
   if (error) {
     return (
       <div className="p-8 text-center">
@@ -76,12 +82,13 @@ export default function CastPage({ params }) {
           onClick={() => window.location.reload()}
           className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition"
         >
-          Pokušajte ponovo
+          Pokušaj ponovo
         </button>
       </div>
     );
   }
 
+  // Prikaz poruke ako nema glumaca za prikaz
   if (!cast || cast.length === 0) {
     return (
       <div className="p-8 text-center">
@@ -92,12 +99,14 @@ export default function CastPage({ params }) {
     );
   }
 
+  // Glavni prikaz glumačke postave u karuselu
   return (
     <div className="p-8 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-8 text-center text-primary">
         Glumačka postava
       </h1>
 
+      {/* Karusel s prikazom glumaca */}
       <div className="relative">
         <Carousel
           opts={{
@@ -117,6 +126,7 @@ export default function CastPage({ params }) {
                     href={`/serije/${resolvedParams.id}/glumci/${member.person.id}`}
                     className="group"
                   >
+                    {/* Slika glumca */}
                     <div className="relative w-32 h-32 mb-3 group-hover:ring-4 group-hover:ring-primary/50 rounded-full transition-all">
                       <Image
                         src={
@@ -129,6 +139,7 @@ export default function CastPage({ params }) {
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>
+                    {/* Ime i uloga glumca */}
                     <div className="text-center">
                       <p className="text-lg font-semibold group-hover:text-primary transition">
                         {member.person.name}
@@ -142,11 +153,14 @@ export default function CastPage({ params }) {
               </CarouselItem>
             ))}
           </CarouselContent>
+
+          {/* Navigacijski gumbi za karusel */}
           <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-primary text-white hover:bg-primary-dark hover:text-white size-10 rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl" />
           <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-primary text-white hover:bg-primary-dark hover:text-white size-10 rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl" />
         </Carousel>
       </div>
 
+      {/* Prikaz ukupnog broja glumaca ispod karusela */}
       <div className="mt-8 text-center">
         <p className="bg-yellow-400 text-black py-2 px-4 rounded-lg inline-block text-sm">
           Ukupno glumaca: {cast.length}
