@@ -53,3 +53,5 @@ Lokalni build:
 npm run build
 npm run start
 ```
+
+Prijava putem GitHub-a možda neće raditi lokalno ako je Authorization callback URL postavljen na produkcijsku verziju – moguće je imati samo jednu aktivnu vrijednost u postavkama aplikacije.
