@@ -1,3 +1,10 @@
+/**
+ * Komponenta za pretragu serija i glumaca pomoću TVmaze API-ja.
+ * Korisnik može otvoriti dijalog, birati između pretrage serija ili glumaca,
+ * unositi upit, i klikom na rezultat biti preusmjeren na stranicu serije ili glumca.
+ * Pretraga glumaca također dohvaća njihove uloge u serijama.
+ */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,11 +20,12 @@ import {
 
 export default function Search() {
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [searchType, setSearchType] = useState("shows");
+  const [query, setQuery] = useState(""); // Trenutni tekst upita
+  const [results, setResults] = useState([]); // Dobiveni rezultati
+  const [searchType, setSearchType] = useState("shows"); // Tip pretrage: "shows" ili "people"
   const router = useRouter();
 
+  // Kada se promijeni upit ili tip pretrage, dohvaćaju se novi rezultati
   useEffect(() => {
     const fetchData = async () => {
       if (query.length < 2) {
@@ -37,6 +45,7 @@ export default function Search() {
         );
         const data = await res.json();
 
+        // Filtriraj samo glumce koji imaju barem jednu ulogu u seriji
         const filtered = await Promise.all(
           data.map(async ({ person }) => {
             const creditsRes = await fetch(
@@ -57,6 +66,7 @@ export default function Search() {
     fetchData();
   }, [query, searchType]);
 
+  // Funkcija za rukovanje klikom na glumca – preusmjerava na njihovu stranicu u kontekstu serije
   const handlePersonSelect = async (personId) => {
     try {
       const res = await fetch(

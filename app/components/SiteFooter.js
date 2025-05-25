@@ -1,3 +1,7 @@
+/**
+ * Footer komponenta prikazuje informacije o izvoru podataka (TVmaze API),
+ * godinu, te link na GitHub profil. Prilagođena je da bude pri dnu stranice.
+ */
 export default function Footer() {
   return (
     <footer className="bg-stone-100 text-black py-3 text-center text-xs border-t border-stone-200 w-full mt-auto relative">

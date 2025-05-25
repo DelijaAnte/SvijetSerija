@@ -1,3 +1,7 @@
+/**
+ * Komponenta za prikaz gumba za scrollanje na vrh stranice.
+ * Gumb se pojavljuje kada korisnik scrolla više od 300px.
+ */
 "use client";
 
 import { useEffect, useState } from "react";

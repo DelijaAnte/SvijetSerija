@@ -1,3 +1,9 @@
+/**
+ * Komponenta koja prikazuje serije s mogućnošću filtriranja po žanrovima.
+ * Pomoću checkboxa korisnik može odabrati jedan ili više žanrova,
+ * a kod provjerava da li serije sadrže sve odabrane žanrove.
+ * Komponenta također podržava paginaciju, prikazujući 4 serije po stranici.
+ */
 "use client";
 
 import { useState, useEffect } from "react";

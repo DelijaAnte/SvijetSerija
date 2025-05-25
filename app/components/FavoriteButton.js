@@ -1,3 +1,6 @@
+/**
+ * Komponenta za dodavanje ili uklanjanje serije iz favorita pomoću toggle switcha.
+ */
 "use client";
 
 import { useState, useEffect } from "react";

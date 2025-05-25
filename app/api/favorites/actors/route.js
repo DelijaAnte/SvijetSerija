@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import axios from "axios";
 
+// GET metoda dohvaća sve favorite glumaca za prijavljenog korisnika
 export async function GET(req) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
@@ -29,6 +30,7 @@ export async function GET(req) {
   });
 }
 
+// POST metoda dodaje glumca u favorite korisnika
 export async function POST(req) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
@@ -49,7 +51,7 @@ export async function POST(req) {
   const userEmail = session.user.email;
   const docRef = doc(db, "users", userEmail, "favorites_actors", `${id}`);
 
-  // Dohvati dodatne podatke o glumcu s TVmaze API-ja
+  // Pokušaj dohvatiti sliku glumca s TVmaze API-ja, ako ne uspije koristi placeholder
   let image = "/placeholder.jpg";
   try {
     const actorResponse = await axios.get(
@@ -57,7 +59,7 @@ export async function POST(req) {
     );
     image = actorResponse.data.image?.medium || image;
   } catch {
-    // Ako API ne radi, koristi placeholder
+    // API nije dostupan, koristi default sliku
   }
 
   await setDoc(docRef, {
@@ -72,6 +74,7 @@ export async function POST(req) {
   });
 }
 
+// DELETE metoda uklanja glumca iz favorita prema ID-u
 export async function DELETE(req) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
@@ -93,7 +96,7 @@ export async function DELETE(req) {
   const docRef = doc(db, "users", userEmail, "favorites_actors", id);
   await deleteDoc(docRef);
 
-  // Nakon brisanja dohvati preostale favorite da bi frontend mogao ažurirati stanje
+  // Nakon brisanja, dohvatimo ažuriranu listu favorita
   const favsCol = collection(db, "users", userEmail, "favorites_actors");
   const favsSnapshot = await getDocs(favsCol);
   const favorites = favsSnapshot.docs.map((doc) => doc.data());

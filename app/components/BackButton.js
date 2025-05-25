@@ -1,3 +1,6 @@
+/**
+ * Komponenta za gumb koji korisnika vraća na prethodnu stranicu.
+ */
 "use client";
 
 import { useRouter } from "next/navigation";

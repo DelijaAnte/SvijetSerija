@@ -9,12 +9,14 @@ import {
   doc,
 } from "firebase/firestore";
 
+// Dohvati sve favorite za korisnika iz Firestore kolekcije
 async function getFavorites(userEmail) {
   const favsCol = collection(db, "users", userEmail, "favorites_series");
   const favsSnapshot = await getDocs(favsCol);
   return favsSnapshot.docs.map((doc) => doc.data());
 }
 
+// GET metoda vraća listu favorita prijavljenog korisnika
 export async function GET(req) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
@@ -31,6 +33,7 @@ export async function GET(req) {
   });
 }
 
+// POST metoda dodaje seriju u favorite korisnika
 export async function POST(req) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
@@ -69,6 +72,7 @@ export async function POST(req) {
   );
 }
 
+// DELETE metoda uklanja seriju iz favorita prema ID-u
 export async function DELETE(req) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {

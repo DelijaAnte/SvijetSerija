@@ -1,3 +1,6 @@
+/**
+ * Komponenta za prikaz gumba za prijavu ili odjavu ovisno o statusu sesije.
+ */
 "use client";
 
 import { signIn, signOut, useSession } from "next-auth/react";

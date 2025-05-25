@@ -1,5 +1,6 @@
+// Konfiguracija za NextAuth
 import NextAuth from "next-auth";
-import { authOptions } from "@/lib/auth"; // koristi relativni ili alias path
+import { authOptions } from "@/lib/auth";
 
 const handler = NextAuth(authOptions);
 
