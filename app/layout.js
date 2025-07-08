@@ -17,6 +17,7 @@ import Providers from "./providers";
 import AuthButton from "./components/AuthButton";
 import SiteFooter from "./components/SiteFooter";
 import ScrollToTop from "./components/ScrollToTop";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
   title: "Svijet Serija - Najbolje serije na jednom mjestu",
@@ -87,6 +88,7 @@ export default function RootLayout({ children }) {
           <ScrollToTop />
           <SiteFooter />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
